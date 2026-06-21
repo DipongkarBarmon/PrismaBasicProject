@@ -1,0 +1,18 @@
+enum ActiveStatus {
+   ACTIVE
+   BLOCKED
+}
+
+enum Role {
+   USER 
+   ADMIN
+   AUTHOR
+}
+
+
+enum Status {
+  PUBLISHED
+  PENDING
+  REJECTED
+  DELETED
+}

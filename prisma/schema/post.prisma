@@ -1,0 +1,9 @@
+// model Post {
+//    id String @id @default(uuid())
+//    title String
+//    content String
+//    thumbnail String?
+//    isFeatured Boolean
+//    status Status @default(PUBLISHED)
+
+// }
