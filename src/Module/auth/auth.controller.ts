@@ -11,6 +11,20 @@ import { authService } from "./auth.service.js";
 
 const userLogin = catchAsync(async(req : Request, res : Response, next : NextFunction)=>{
       const {accessToken, refreshToken} = await authService.userLoginFromBD(req.body);
+       res.cookie("AccessToken",accessToken,{
+          secure : false,
+          httpOnly : true,
+          sameSite : "lax",
+          maxAge : 1000*60*60*24  // 1d
+
+      })
+      res.cookie("RefreshToken",refreshToken,{
+          secure : false,
+          httpOnly : true,
+          sameSite : "lax",
+          maxAge : 1000*60*60*24  // 1d
+
+      })
 
        sendRespons(res, {
           success : true,

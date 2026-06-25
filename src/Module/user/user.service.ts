@@ -3,7 +3,7 @@ import config from "../../config/index.js"
 import { prisma } from "../../lib/prisma.js"
 import { IUser } from "./user.interface.js"
 import bcrypt from "bcryptjs"
-import jwt from 'jsonwebtoken'
+ 
  
 
 const userRegisterIntoDB = async(payload : IUser) => {
@@ -58,7 +58,60 @@ const userRegisterIntoDB = async(payload : IUser) => {
     }
 }
 
+const getUserProfileFromDB = async(userId : string) => {
+     
+   try {
+      const user = await prisma.user.findUniqueOrThrow ({
+       where : {
+          id : userId
+       },
+       omit :{
+          password :true
+       },
+       include :{
+         profile : true
+       }
+    })
+
+    return user.profile
+   } catch (error : any) {
+      throw error(error);
+   }
+
+    
+}
+const updateUserProfileIntoDB = async(userID : string, payload : IUser) => {
+    
+   const {name, email, profilePhote, bio} = payload
+
+   const updateUser = await prisma.user.update({
+      where : {
+         id : userID
+      },
+      data :{
+         name,
+         email,
+         profile : {
+            update : {
+               profilePhote,
+               bio
+            }
+         }
+      },
+      omit : {
+         password : true,
+      },
+      include : {
+         profile : true
+      }
+   })
+
+   return updateUser;
+
+}
 
  export const userService = {
   userRegisterIntoDB,
+  getUserProfileFromDB,
+  updateUserProfileIntoDB
 }

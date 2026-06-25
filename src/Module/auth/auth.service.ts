@@ -5,6 +5,8 @@ import { prisma } from "../../lib/prisma.js"
 import bcrypt from "bcryptjs"
 import jwt, { SignOptions } from 'jsonwebtoken'
 import { ILoginUser } from "./auth.interface.js"
+import { jwtToken } from "../../Utility/jwtToken.js"
+ 
  
 
 const userLoginFromBD = async(payload : ILoginUser) => {
@@ -40,14 +42,25 @@ const userLoginFromBD = async(payload : ILoginUser) => {
        role : user.role
     }
 
-    const accessToken = jwt.sign(jwtPayload,config.jwt_accress_token as string, {
-       expiresIn : config.jwt_access_expires_in as SignOptions['expiresIn']
-    })
+   //  const accessToken = jwt.sign(jwtPayload,config.jwt_accress_token, {
+   //     expiresIn : config.jwt_access_expires_in 
+   //  } as SignOptions)
 
-    const refreshToken = jwt.sign(jwtPayload, config.jwt_refresh_token as string, {
-       expiresIn : config.jwt_refresh_expires_in as SignOptions['expiresIn']
-    })
+   const accessToken = jwtToken.jwtTokenCreate(
+      jwtPayload ,
+      config.jwt_accress_token,
+      config.jwt_access_expires_in as SignOptions
+   )
 
+   //  const refreshToken = jwt.sign(jwtPayload, config.jwt_refresh_token as string, {
+   //     expiresIn : config.jwt_refresh_expires_in 
+   //  } as SignOptions)
+
+    const refreshToken = jwtToken.jwtTokenCreate(
+        jwtPayload,
+        config.jwt_refresh_token,
+        config.jwt_refresh_expires_in as SignOptions
+    )
     return {accessToken, refreshToken}
 
 }
