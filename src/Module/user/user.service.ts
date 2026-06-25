@@ -1,9 +1,10 @@
 
-import { profile } from "node:console"
 import config from "../../config/index.js"
 import { prisma } from "../../lib/prisma.js"
 import { IUser } from "./user.interface.js"
 import bcrypt from "bcryptjs"
+import jwt from 'jsonwebtoken'
+ 
 
 const userRegisterIntoDB = async(payload : IUser) => {
     try {
@@ -57,6 +58,7 @@ const userRegisterIntoDB = async(payload : IUser) => {
     }
 }
 
-export const userService = {
+
+ export const userService = {
   userRegisterIntoDB,
 }

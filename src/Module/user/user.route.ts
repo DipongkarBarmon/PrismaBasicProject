@@ -7,4 +7,5 @@ const router = Router()
 
 router.post('/register',userController.userRegister)
 
+
 export const userRouter = router

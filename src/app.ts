@@ -4,6 +4,7 @@ import config from "./config/index.js"
 import cookieParser from "cookie-parser"
 import { prisma } from "./lib/prisma.js"
 import { userRouter } from "./Module/user/user.route.js"
+import { authRouter } from "./Module/auth/auth.route.js"
 
 const app: Application = express()
  
@@ -22,5 +23,6 @@ app.get('/',async(req : Request, res : Response) => {
 })
 
 app.use('/api/users',userRouter)
+app.use('/api/auth',authRouter)
 
 export default app;
