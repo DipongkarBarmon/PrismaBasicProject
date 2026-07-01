@@ -10,10 +10,10 @@ import { catchAsync } from "../Utility/catchAsync.js";
 
 export const auth = (...roles : Role[]) => {
       return catchAsync( async(req : Request, res : Response, next : NextFunction) => {
-          const token = req.cookies.AccessToken ? req.cookies.AccessToken
+          const token = req.cookies.accessToken ? req.cookies.accessToken
            : req.headers.authorization?.startsWith("Bearer ")? req.headers.authorization?.split(" ")[1] : req.headers.authorization;
 
-          // console.log(token)
+           console.log(token)
           if (!token) {
              throw new Error("Unauthorized access!! Please login to access this resource!")
           } 

@@ -11,14 +11,14 @@ import { authService } from "./auth.service.js";
 
 const userLogin = catchAsync(async(req : Request, res : Response, next : NextFunction)=>{
       const {accessToken, refreshToken} = await authService.userLoginFromBD(req.body);
-       res.cookie("AccessToken",accessToken,{
+       res.cookie("accessToken",accessToken,{
           secure : false,
           httpOnly : true,
           sameSite : "lax",
           maxAge : 1000*60*60*24  // 1d
 
       })
-      res.cookie("RefreshToken",refreshToken,{
+      res.cookie("refreshToken",refreshToken,{
           secure : false,
           httpOnly : true,
           sameSite : "lax",
@@ -38,7 +38,29 @@ const userLogin = catchAsync(async(req : Request, res : Response, next : NextFun
    
 })
 
+const refreshToken = catchAsync(async( req : Request,res: Response,next : NextFunction) => {
+      const token = req.cookies.RefreshToken;
+
+      const accessToken = await authService.refreshTokenFromDB(token)
+      
+      res.cookie("accessToken",accessToken, {
+         secure : false,
+         httpOnly : true,
+         sameSite :"lax",
+         maxAge : 1000*60*60*24
+      })
+      
+      sendRespons(res, {
+          success : true,
+          statusCode : httpStatus.OK,
+          message : "Token refreshed successfully",
+          data : {
+             accessToken
+          }
+      })
+})
 
 export const authController ={
-   userLogin
+   userLogin,
+   refreshToken
 }
